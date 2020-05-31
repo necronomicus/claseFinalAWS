@@ -1,10 +1,19 @@
-package com.example.models;
+package com.example.demo.models;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.context.annotation.RequestScope;
+
+@RequestScope
 public class User {
+	@Value("${user.id}")//ESTO ES EXCLUSIVO PARA QUE SE VEA EN HTML
 	private int id;
+	@Value("${user.dni}")
 	private int dni;
+	@Value("${user.name}")
 	private String name;
+	@Value("${user.lastName}")
 	private String lastName;
+	@Value("${user.sex}")
 	private int sex;
 	
 	

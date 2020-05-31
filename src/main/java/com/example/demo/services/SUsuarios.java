@@ -1,4 +1,4 @@
-package com.example.services;
+package com.example.demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,15 @@ import org.springframework.stereotype.Service;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.example.models.User;
+import com.example.demo.models.User;
+
 
 @Service
 public class SUsuarios {
@@ -49,4 +54,29 @@ public class SUsuarios {
 		
 		return listUser;
 	}
+	
+	
+	public User getUser(int id)
+	{
+		User user = new User();
+		DynamoDB claw = new DynamoDB(client);//
+		Table table = claw.getTable(tableName);
+		GetItemSpec spec = new GetItemSpec().withPrimaryKey("id", id);
+		try {
+			Item usuario = table.getItem(spec);
+			user.setDni(usuario.getInt("dni"));
+			user.setId(id);
+			user.setName(usuario.getString("name"));
+			user.setLastName(usuario.getString("lastName"));
+			user.setSex(usuario.getInt("sex"));
+			
+			return user;
+		}
+		catch(Exception e){
+			return new User();
+		}
+		
+	}
+	
+	
 }
